@@ -1,17 +1,17 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:cos_challenge/core/constants/http_paths.dart';
 import 'package:cos_challenge/core/constants/local_storage_keys.dart';
 import 'package:cos_challenge/data/adapters/http_adapter.dart';
 import 'package:cos_challenge/data/adapters/local_storage_adapter.dart';
 import 'package:cos_challenge/data/data_sources/vehicle_data_source.dart';
-import 'package:cos_challenge/domain/models/exceptions/cos_exception.dart';
+import 'package:cos_challenge/domain/exceptions/cos_exception.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../core/cos_mock_credentials.dart';
 @GenerateMocks([LocalStorageAdapter, HttpAdapter])
 import 'vehicles_data_source_test.mocks.dart';
 
@@ -20,41 +20,11 @@ void main() {
   late MockHttpAdapter http;
   late VehicleDataSource vehicleDataSource;
 
-  const vin = '1YVWB32R5CU123456';
+  const vin = CosMockCredentials.vin;
   final url = '${HttpPaths.vehicles}?vin=$vin';
-  final errorMessage = 'Please try again in 111 seconds';
-
-  final errorJson =
-      '''
-  {
-  "msgKey": "maintenance",
-  "params": { "delaySeconds": "111" },
-  "message": "$errorMessage"
-  }
-  ''';
-
-  final vehicleJson =
-      '''
-    {
-      "id": ${Random().nextInt(1000000)},
-      "feedback": "Please modify the price.",
-      "valuatedAt": "2023-01-05T14:08:40.456Z",
-      "requestedAt": "2023-01-05T14:08:40.456Z",
-      "createdAt": "2023-01-05T14:08:40.456Z",
-      "updatedAt": "2023-01-05T14:08:42.153Z",
-      "make": "Toyota",
-      "model": "GT 86 Basis",
-      "externalId": "DE003-018601450020008",
-      "_fk_sellerUser": "25475e37-6973-483b-9b15-cfee721fc29f",
-      "price": ${Random().nextInt(1000)},
-      "positiveCustomerFeedback": ${Random().nextBool()},
-      "_fk_uuid_auction": "3e255ad2-36d4-4048-a962-5e84e27bfa6e",
-      "inspectorRequestedAt": "2023-01-05T14:08:40.456Z",
-      "origin": "AUCTION",
-      "estimationRequestId": "3a295387d07f"
-    }
-''';
-
+  final errorMessage = CosMockCredentials.errorMessage;
+  final errorJson = CosMockCredentials.errorJson;
+  final vehicleJson = CosMockCredentials.vehicleJson;
   final localStorageVehicles = jsonEncode({vin: jsonDecode(vehicleJson)});
 
   setUp(() {

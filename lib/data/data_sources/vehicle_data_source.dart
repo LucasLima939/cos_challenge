@@ -4,7 +4,7 @@ import 'package:cos_challenge/core/constants/http_paths.dart';
 import 'package:cos_challenge/core/constants/local_storage_keys.dart';
 import 'package:cos_challenge/data/adapters/http_adapter.dart';
 import 'package:cos_challenge/data/adapters/local_storage_adapter.dart';
-import 'package:cos_challenge/domain/models/exceptions/cos_exception.dart';
+import 'package:cos_challenge/domain/exceptions/cos_exception.dart';
 
 abstract class VehicleDataSource {
   Future<Map<String, dynamic>> getVehicle({required String vin});
