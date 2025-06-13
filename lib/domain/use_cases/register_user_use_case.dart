@@ -1,5 +1,6 @@
 import 'package:cos_challenge/core/utils/use_case.dart';
 import 'package:cos_challenge/domain/repositories/auth_repository.dart';
+import 'package:equatable/equatable.dart';
 
 class RegisterUserUseCase implements UseCase<void, RegisterUserParams> {
   final AuthRepository repository;
@@ -12,9 +13,12 @@ class RegisterUserUseCase implements UseCase<void, RegisterUserParams> {
   }
 }
 
-class RegisterUserParams {
+class RegisterUserParams extends Equatable {
   final String email;
   final String password;
 
-  RegisterUserParams({required this.email, required this.password});
+  const RegisterUserParams({required this.email, required this.password});
+
+  @override
+  List<Object?> get props => [email, password];
 }
