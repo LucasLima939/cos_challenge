@@ -1,9 +1,11 @@
-import 'dart:io';
+import 'package:equatable/equatable.dart';
 
-class CosException implements Exception {
+class CosException extends Equatable implements Exception {
   final String message;
+  final int? errorCode;
 
-  const CosException(this.message);
-  CosException.fromHttpException(HttpException exception)
-    : message = exception.message;
+  const CosException(this.message, {this.errorCode});
+
+  @override
+  List<Object?> get props => [message, errorCode];
 }
