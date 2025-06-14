@@ -1,3 +1,4 @@
+import 'package:cos_challenge/presentation/screens/login/login_screen.dart';
 import 'package:cos_challenge/presentation/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,7 @@ class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     final route = switch (settings.name) {
       '/splash' => const SplashScreen(),
+      '/login' => const LoginScreen(),
       _ => const SizedBox.shrink(),
     };
     return MaterialPageRoute(builder: (context) => route);

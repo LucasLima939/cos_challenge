@@ -8,5 +8,20 @@ class AppTheme {
     colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
     scaffoldBackgroundColor: backgroundColor,
     appBarTheme: AppBarTheme(backgroundColor: backgroundColor, elevation: 0),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primaryColor,
+        foregroundColor: secondaryColor,
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(borderSide: BorderSide(color: secondaryColor)),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: secondaryColor),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: primaryColor),
+      ),
+    ),
   );
 }
