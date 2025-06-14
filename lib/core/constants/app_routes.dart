@@ -1,5 +1,7 @@
+import 'package:cos_challenge/domain/models/vehicle_model.dart';
 import 'package:cos_challenge/presentation/screens/login/login_screen.dart';
 import 'package:cos_challenge/presentation/screens/splash/splash_screen.dart';
+import 'package:cos_challenge/presentation/screens/vehicle_details/vehicle_details_screen.dart';
 import 'package:cos_challenge/presentation/screens/vehicle_search/vehicle_search_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +18,9 @@ class AppRoutes {
       '/splash' => const SplashScreen(),
       '/login' => const LoginScreen(),
       '/vehicle-search' => const VehicleSearchScreen(),
+      '/vehicle-details' => VehicleDetailsScreen(
+        vehicle: settings.arguments as VehicleModel,
+      ),
       _ => const SizedBox.shrink(),
     };
     return MaterialPageRoute(builder: (context) => route);
