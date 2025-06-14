@@ -8,6 +8,8 @@ class UiFailure extends Equatable {
 
   factory UiFailure.fromCosException(CosException exception) {
     switch (exception.errorCode?.toString()) {
+      case '400':
+        return UiFailure(message: exception.message);
       case '401':
         return const UiFailure(message: 'Invalid credentials');
       case '404':

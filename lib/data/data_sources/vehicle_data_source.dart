@@ -11,7 +11,7 @@ import 'package:http/http.dart';
 
 abstract class VehicleDataSource {
   Future<Map<String, dynamic>> getVehicle({required String vin});
-  Future<Map<String, dynamic>> getVehicleFromLocalStorage({
+  Future<Map<String, dynamic>?> getVehicleFromLocalStorage({
     required String vin,
   });
   Future<void> saveVehicleLocally({
@@ -38,12 +38,20 @@ class VehicleDataSourceImpl implements VehicleDataSource {
 
       final url = '${HttpPaths.vehicles}?vin=$vin';
       final response = await http.get(url, headers: headers);
+      final responseBody = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        return responseBody;
       }
 
-      final errorJson = jsonDecode(response.body);
-      throw CosException(errorJson['message'], errorCode: response.statusCode);
+      if (responseBody is List) {
+        throw CosException.fromMultiSelection(
+          multiSelectionVehicles: List<Map<String, dynamic>>.from(responseBody),
+        );
+      }
+      throw CosException(
+        responseBody['message'] ?? '',
+        errorCode: response.statusCode,
+      );
     } on CosException {
       rethrow;
     } on ClientException {
@@ -56,12 +64,11 @@ class VehicleDataSourceImpl implements VehicleDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> getVehicleFromLocalStorage({
+  Future<Map<String, dynamic>?> getVehicleFromLocalStorage({
     required String vin,
   }) async {
     final vehicles = await localStorage.read(LocalStorageKeys.vehicles);
-    final vehicle = vehicles != null ? jsonDecode(vehicles)[vin] : null;
-    return vehicle;
+    return vehicles != null ? jsonDecode(vehicles)[vin] : null;
   }
 
   @override

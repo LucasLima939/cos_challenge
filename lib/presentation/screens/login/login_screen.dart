@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
       bloc: _loginCubit,
       listener: (context, state) {
         if (state is LoginSuccess) {
-          Navigator.pushNamed(context, AppRoutes.vehicleSearch);
+          Navigator.pushReplacementNamed(context, AppRoutes.vehicleSearch);
         }
       },
       child: GestureDetector(

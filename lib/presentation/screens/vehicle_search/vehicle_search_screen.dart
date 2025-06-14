@@ -1,5 +1,6 @@
 import 'package:cos_challenge/core/constants/app_routes.dart';
 import 'package:cos_challenge/core/utils/snackbar_utils.dart';
+import 'package:cos_challenge/domain/models/multiselection_vehicle_model.dart';
 import 'package:cos_challenge/presentation/cubits/vehicle_search/vehicle_search_cubit.dart';
 import 'package:cos_challenge/presentation/cubits/vehicle_search/vehicle_search_state.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,14 @@ class _VehicleSearchScreenState extends State<VehicleSearchScreen> {
   late final _vehicleSearchCubit = context.read<VehicleSearchCubit>();
   final _vinController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late List<MultiSelectionVehicleModel> _multiSelectionVehicles;
+
+  Future<void> _searchVehicle() async {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState!.validate()) {
+      await _vehicleSearchCubit.searchVehicle(_vinController.text);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +46,10 @@ class _VehicleSearchScreenState extends State<VehicleSearchScreen> {
         },
         builder: (context, state) {
           final isLoading = state is VehicleSearchLoading;
+          _multiSelectionVehicles = [];
+          if (state is VehicleSearchMultiSelection) {
+            _multiSelectionVehicles = state.vehicles;
+          }
 
           return Scaffold(
             body: Form(
@@ -68,14 +81,7 @@ class _VehicleSearchScreenState extends State<VehicleSearchScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: !isLoading
-                            ? () async {
-                                FocusScope.of(context).unfocus();
-                                if (_formKey.currentState!.validate()) {
-                                  await _vehicleSearchCubit.searchVehicle(
-                                    _vinController.text,
-                                  );
-                                }
-                              }
+                            ? () async => await _searchVehicle()
                             : null,
                         child: isLoading
                             ? SizedBox(
@@ -86,6 +92,17 @@ class _VehicleSearchScreenState extends State<VehicleSearchScreen> {
                             : const Text('Search'),
                       ),
                     ),
+                    const SizedBox(height: 20),
+                    if (_multiSelectionVehicles.isNotEmpty)
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _multiSelectionVehicles.length,
+                        itemBuilder: (context, index) =>
+                            _buildMultiSelectionCard(
+                              _multiSelectionVehicles[index],
+                            ),
+                      ),
                   ],
                 ),
               ),
@@ -95,6 +112,20 @@ class _VehicleSearchScreenState extends State<VehicleSearchScreen> {
       ),
     );
   }
+
+  Widget _buildMultiSelectionCard(MultiSelectionVehicleModel vehicle) =>
+      InkWell(
+        onTap: () async => _searchVehicle(),
+        child: Card(
+          child: ListTile(
+            title: Text('${vehicle.make} ${vehicle.model}'),
+            trailing: Text(
+              '${vehicle.similarity}%',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      );
 
   @override
   void dispose() {

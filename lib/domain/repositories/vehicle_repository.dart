@@ -20,7 +20,7 @@ class VehicleRepositoryImpl implements VehicleRepository {
     } on CosException catch (e) {
       if (e.errorCode != null && e.errorCode! > 399) {
         final vehicle = await dataSource.getVehicleFromLocalStorage(vin: vin);
-        return VehicleModel.fromJson(vehicle);
+        return vehicle != null ? VehicleModel.fromJson(vehicle) : throw e;
       }
       rethrow;
     }
