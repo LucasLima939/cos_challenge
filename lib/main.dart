@@ -1,3 +1,4 @@
+import 'package:cos_challenge/core/constants/app_routes.dart';
 import 'package:cos_challenge/core/theme/app_theme.dart';
 import 'package:cos_challenge/injection_container.dart';
 import 'package:cos_challenge/presentation/cubits/splash/splash_cubit.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'CarOnSale',
       theme: AppTheme.light,
+      onGenerateRoute: AppRoutes.onGenerateRoute,
       home: MultiBlocProvider(
         providers: [BlocProvider(create: (context) => getIt<SplashCubit>())],
         child: const SplashScreen(),

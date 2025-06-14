@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<SplashCubit, SplashState>(
-      bloc: context.read<SplashCubit>(),
+      bloc: context.read<SplashCubit>()..checkUserAuthentication(),
       listener: (context, state) {
         if (state is SplashAuthenticated) {
           Navigator.pushNamed(context, AppRoutes.vehicleSearch);
@@ -20,7 +20,11 @@ class SplashScreen extends StatelessWidget {
           Navigator.pushNamed(context, AppRoutes.login);
         }
       },
-      child: Scaffold(body: Center(child: SvgPicture.asset(ImagesPaths.logo))),
+      child: Scaffold(
+        body: Center(
+          child: SvgPicture.asset(ImagesPaths.logo, height: 150, width: 150),
+        ),
+      ),
     );
   }
 }
