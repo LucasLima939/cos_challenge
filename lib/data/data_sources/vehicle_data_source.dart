@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cos_challenge/core/constants/http_paths.dart';
 import 'package:cos_challenge/core/constants/local_storage_keys.dart';
+import 'package:cos_challenge/cos_client.dart';
 import 'package:cos_challenge/data/adapters/http_adapter.dart';
 import 'package:cos_challenge/data/adapters/local_storage_adapter.dart';
 import 'package:cos_challenge/domain/exceptions/cos_exception.dart';
@@ -20,10 +21,17 @@ class VehicleDataSourceImpl implements VehicleDataSource {
 
   VehicleDataSourceImpl({required this.localStorage, required this.http});
 
+  String? userSession;
+
   @override
   Future<Map<String, dynamic>> getVehicle({required String vin}) async {
+    userSession ??= await localStorage.read(LocalStorageKeys.session);
+    final headers = userSession != null
+        ? {CosChallenge.user: userSession!}
+        : null;
+
     final url = '${HttpPaths.vehicles}?vin=$vin';
-    final response = await http.get(url);
+    final response = await http.get(url, headers: headers);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     }

@@ -3,6 +3,7 @@ import 'package:cos_challenge/core/theme/app_theme.dart';
 import 'package:cos_challenge/injection_container.dart';
 import 'package:cos_challenge/presentation/cubits/login/login_cubit.dart';
 import 'package:cos_challenge/presentation/cubits/splash/splash_cubit.dart';
+import 'package:cos_challenge/presentation/cubits/vehicle_search/vehicle_search_cubit.dart';
 import 'package:cos_challenge/presentation/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ void main() async {
       providers: [
         BlocProvider(create: (context) => getIt<SplashCubit>()),
         BlocProvider(create: (context) => getIt<LoginCubit>()),
+        BlocProvider(create: (context) => getIt<VehicleSearchCubit>()),
       ],
       child: const MyApp(),
     ),

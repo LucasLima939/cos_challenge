@@ -71,10 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         FocusScope.of(context).unfocus();
                         if (_formKey.currentState!.validate()) {
-                          _loginCubit.login(
+                          await _loginCubit.login(
                             _emailController.text,
                             _passwordController.text,
                           );
