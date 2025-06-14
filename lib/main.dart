@@ -1,21 +1,19 @@
+import 'package:cos_challenge/data/adapters/local_storage_adapter.dart';
+import 'package:cos_challenge/data/data_sources/auth_data_source.dart';
+import 'package:cos_challenge/domain/repositories/auth_repository.dart';
+import 'package:cos_challenge/my_app.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp(authRepository: await getAuthRepository()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const SizedBox.shrink(),
-    );
-  }
+Future getAuthRepository() async {
+  final localStorage = SpLocalStorageAdapterImpl(
+    sharedPreferences: await SharedPreferences.getInstance(),
+  );
+  final dataSource = AuthDataSourceImpl(localStorage: localStorage);
+  return AuthRepositoryImpl(dataSource: dataSource);
 }
