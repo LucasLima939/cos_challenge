@@ -4,6 +4,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:cos_challenge/domain/exceptions/cos_exception.dart';
 import 'package:cos_challenge/domain/models/vehicle_model.dart';
 import 'package:cos_challenge/domain/use_cases/get_vehicle_by_vin_use_case.dart';
+import 'package:cos_challenge/domain/use_cases/save_vehicle_locally_use_case.dart';
 import 'package:cos_challenge/presentation/cubits/vehicle_search/vehicle_search_cubit.dart';
 import 'package:cos_challenge/presentation/cubits/vehicle_search/vehicle_search_state.dart';
 import 'package:cos_challenge/presentation/failure/ui_failure.dart';
@@ -12,23 +13,30 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../core/cos_mock_credentials.dart';
-@GenerateMocks([GetVehicleByVinUseCase])
+@GenerateMocks([GetVehicleByVinUseCase, SaveVehicleLocallyUseCase])
 import 'vehicle_search_cubit_test.mocks.dart';
 
 void main() {
   late VehicleSearchCubit vehicleSearchCubit;
   late MockGetVehicleByVinUseCase mockGetVehicleByVinUseCase;
+  late MockSaveVehicleLocallyUseCase mockSaveVehicleUseCase;
 
   final vin = CosMockCredentials.vin;
   final vehicleException = CosException('Unknown error', errorCode: 500);
   final vehicle = VehicleModel.fromJson(
     jsonDecode(CosMockCredentials.vehicleJson),
   );
+  final saveVehicleLocallyParams = SaveVehicleLocallyParams(
+    vehicle: vehicle,
+    vin: vin,
+  );
 
   setUp(() {
     mockGetVehicleByVinUseCase = MockGetVehicleByVinUseCase();
+    mockSaveVehicleUseCase = MockSaveVehicleLocallyUseCase();
     vehicleSearchCubit = VehicleSearchCubit(
       getVehicleByVinUseCase: mockGetVehicleByVinUseCase,
+      saveVehicleUseCase: mockSaveVehicleUseCase,
     );
   });
 
@@ -44,6 +52,9 @@ void main() {
         when(
           mockGetVehicleByVinUseCase.call(vin),
         ).thenAnswer((_) async => vehicle);
+        when(
+          mockSaveVehicleUseCase.call(saveVehicleLocallyParams),
+        ).thenAnswer((_) async {});
         return cubit.searchVehicle(vin);
       },
       expect: () => [

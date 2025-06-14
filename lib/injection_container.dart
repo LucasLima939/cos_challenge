@@ -8,6 +8,7 @@ import 'package:cos_challenge/domain/repositories/vehicle_repository.dart';
 import 'package:cos_challenge/domain/use_cases/get_vehicle_by_vin_use_case.dart';
 import 'package:cos_challenge/domain/use_cases/is_user_authenticated_use_case.dart';
 import 'package:cos_challenge/domain/use_cases/register_user_use_case.dart';
+import 'package:cos_challenge/domain/use_cases/save_vehicle_locally_use_case.dart';
 import 'package:cos_challenge/presentation/cubits/login/login_cubit.dart';
 import 'package:cos_challenge/presentation/cubits/splash/splash_cubit.dart';
 import 'package:cos_challenge/presentation/cubits/vehicle_search/vehicle_search_cubit.dart';
@@ -57,6 +58,9 @@ Future<void> initContainer() async {
   getIt.registerSingleton<GetVehicleByVinUseCase>(
     GetVehicleByVinUseCase(repository: getIt<VehicleRepository>()),
   );
+  getIt.registerSingleton<SaveVehicleLocallyUseCase>(
+    SaveVehicleLocallyUseCase(repository: getIt<VehicleRepository>()),
+  );
   // Cubits
   getIt.registerSingleton<SplashCubit>(
     SplashCubit(
@@ -67,6 +71,9 @@ Future<void> initContainer() async {
     LoginCubit(registerUseCase: getIt<RegisterUserUseCase>()),
   );
   getIt.registerSingleton<VehicleSearchCubit>(
-    VehicleSearchCubit(getVehicleByVinUseCase: getIt<GetVehicleByVinUseCase>()),
+    VehicleSearchCubit(
+      getVehicleByVinUseCase: getIt<GetVehicleByVinUseCase>(),
+      saveVehicleUseCase: getIt<SaveVehicleLocallyUseCase>(),
+    ),
   );
 }

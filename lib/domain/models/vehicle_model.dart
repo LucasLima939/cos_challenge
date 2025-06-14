@@ -39,10 +39,10 @@ class VehicleModel extends Equatable {
   Map<String, dynamic> toJson() => {
     'id': id,
     'feedback': feedback,
-    'valuatedAt': valuatedAt,
-    'requestedAt': requestedAt,
-    'createdAt': createdAt,
-    'updatedAt': updatedAt,
+    'valuatedAt': valuatedAt.toIso8601String(),
+    'requestedAt': requestedAt.toIso8601String(),
+    'createdAt': createdAt.toIso8601String(),
+    'updatedAt': updatedAt.toIso8601String(),
     'make': make,
     'model': model,
     'externalId': externalId,
@@ -50,7 +50,7 @@ class VehicleModel extends Equatable {
     'price': price,
     'positiveCustomerFeedback': positiveCustomerFeedback,
     '_fk_uuid_auction': auctionId,
-    'inspectorRequestedAt': inspectorRequestedAt,
+    'inspectorRequestedAt': inspectorRequestedAt.toIso8601String(),
     'origin': origin,
     'estimationRequestId': estimationRequestId,
   };

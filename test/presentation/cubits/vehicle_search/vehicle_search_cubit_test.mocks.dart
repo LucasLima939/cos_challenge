@@ -10,6 +10,8 @@ import 'package:cos_challenge/domain/repositories/vehicle_repository.dart'
     as _i2;
 import 'package:cos_challenge/domain/use_cases/get_vehicle_by_vin_use_case.dart'
     as _i4;
+import 'package:cos_challenge/domain/use_cases/save_vehicle_locally_use_case.dart'
+    as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -66,4 +68,34 @@ class MockGetVehicleByVinUseCase extends _i1.Mock
             ),
           )
           as _i5.Future<_i3.VehicleModel>);
+}
+
+/// A class which mocks [SaveVehicleLocallyUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSaveVehicleLocallyUseCase extends _i1.Mock
+    implements _i6.SaveVehicleLocallyUseCase {
+  MockSaveVehicleLocallyUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.VehicleRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeVehicleRepository_0(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i2.VehicleRepository);
+
+  @override
+  _i5.Future<void> call(_i6.SaveVehicleLocallyParams? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
 }
