@@ -44,12 +44,12 @@ void main() {
         when(
           vehicleDataSource.getVehicle(vin: CosMockCredentials.vin),
         ).thenThrow(
-          CosException(CosMockCredentials.errorMessage, errorCode: 400),
+          CosException(CosMockCredentials.errorMessage, errorCode: 350),
         );
         expect(
           vehicleRepository.getVehicle(CosMockCredentials.vin),
           throwsA(
-            CosException(CosMockCredentials.errorMessage, errorCode: 400),
+            CosException(CosMockCredentials.errorMessage, errorCode: 350),
           ),
         );
       },

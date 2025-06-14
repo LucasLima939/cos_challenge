@@ -1,4 +1,5 @@
 import 'package:cos_challenge/data/data_sources/vehicle_data_source.dart';
+import 'package:cos_challenge/domain/exceptions/cos_exception.dart';
 import 'package:cos_challenge/domain/models/vehicle_model.dart';
 
 abstract class VehicleRepository {
@@ -13,8 +14,16 @@ class VehicleRepositoryImpl implements VehicleRepository {
 
   @override
   Future<VehicleModel> getVehicle(String vin) async {
-    final vehicle = await dataSource.getVehicle(vin: vin);
-    return VehicleModel.fromJson(vehicle);
+    try {
+      final vehicle = await dataSource.getVehicle(vin: vin);
+      return VehicleModel.fromJson(vehicle);
+    } on CosException catch (e) {
+      if (e.errorCode != null && e.errorCode! > 399) {
+        final vehicle = await dataSource.getVehicleFromLocalStorage(vin: vin);
+        return VehicleModel.fromJson(vehicle);
+      }
+      rethrow;
+    }
   }
 
   @override

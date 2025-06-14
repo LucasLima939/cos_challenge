@@ -40,7 +40,12 @@ void main() {
     test(
       'When the getVehicle method is called, it should call the correct route and return the vehicle',
       () async {
-        when(http.get(url)).thenAnswer((_) async => Response(vehicleJson, 200));
+        when(
+          localStorage.read(LocalStorageKeys.session),
+        ).thenAnswer((_) async => '123456');
+        when(
+          http.get(url, headers: anyNamed('headers')),
+        ).thenAnswer((_) async => Response(vehicleJson, 200));
         final vehicle = await vehicleDataSource.getVehicle(vin: vin);
         expect(vehicle, jsonDecode(vehicleJson));
       },
@@ -49,23 +54,16 @@ void main() {
     test(
       'When the getVehicle method is called with an invalid vin, it should throw an exception',
       () async {
-        when(http.get(url)).thenAnswer((_) async => Response(errorJson, 400));
+        when(
+          localStorage.read(LocalStorageKeys.session),
+        ).thenAnswer((_) async => '123456');
+        when(
+          http.get(url, headers: anyNamed('headers')),
+        ).thenAnswer((_) async => Response(errorJson, 400));
         expect(
           vehicleDataSource.getVehicle(vin: vin),
           throwsA(CosException(errorMessage, errorCode: 400)),
         );
-      },
-    );
-
-    test(
-      'When the server has some error but the vehicle exists locally, it should return the vehicle',
-      () async {
-        when(http.get(url)).thenAnswer((_) async => Response(errorJson, 500));
-        when(
-          localStorage.read(LocalStorageKeys.vehicles),
-        ).thenAnswer((_) async => localStorageVehicles);
-        final vehicle = await vehicleDataSource.getVehicle(vin: vin);
-        expect(vehicle, jsonDecode(vehicleJson));
       },
     );
   });
