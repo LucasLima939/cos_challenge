@@ -1,6 +1,6 @@
 # cos_challenge
 
-This project is a CarOnSale challenge and these are out main goal:
+This project is a CarOnSale challenge and these are our main goal:
 - Step 1: The app must provide an user identification.
     - Bonus: Save the data locally so the step can be skipped.
 - Step 2: The user should be able to enter the VIN for search a vehicle, this process should have a good error handling structure.
@@ -24,7 +24,10 @@ This project follows the best practices for Flutter, we are using:
 - Architecture: Clean Arch.
 - State Management: Cubit.
 - Design Patterns: Adapter.
-- Dependency Injector: BlocProvider.
+- Dependency Injector: GetIt + BlocProvider.
 - Follows the SOLID principles.
 
 ### About the Clean Architecture
+
+![Clean Architecture Diagram](https://www.dbestech.com/uploads/20231219/429302f2ab88bfae0e98b8e692dcf12e.jpg)
+
